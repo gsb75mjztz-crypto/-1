@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Routes — Learn to Manage Your Finances</title>
+<meta name="description" content="A guided roadmap through the six routes to financial health: budgeting, emergency savings, debt payoff, retirement, investing, and protection.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="logo" href="#top">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Routes
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#roadmap">Roadmap</a>
+      <a href="#routes">Routes</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="progress-chip" role="status" aria-live="polite">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span id="progress-label">0% complete</span>
+    </div>
+  </div>
+  <div class="header-bar" aria-hidden="true"><div class="header-bar-fill" id="header-bar-fill"></div></div>
+</header>
+
+<main id="main">
+
+  <section class="hero" id="top">
+    <div class="wrap hero-inner">
+      <p class="eyebrow">A guided path through personal finance</p>
+      <h1>Master your money, <span>one route at a time.</span></h1>
+      <p class="hero-sub">Financial health isn't one big leap — it's six manageable routes, taken in order. Follow the roadmap, check off each step, and build a plan that actually sticks.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#roadmap">
+          Start the journey
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#faq">Why this order?</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>6</strong><span>routes</span></div>
+        <div><strong>24</strong><span>concrete steps</span></div>
+        <div><strong>0</strong><span>jargon required</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="roadmap-section" id="roadmap">
+    <div class="wrap">
+      <h2 class="section-title">The roadmap</h2>
+      <p class="section-sub">Each route builds on the last. Click a stop to jump to it — your progress is saved automatically in this browser.</p>
+      <ol class="roadmap" id="roadmap-list" aria-label="Routes overview"></ol>
+    </div>
+  </section>
+
+  <section class="routes-section" id="routes">
+    <div class="wrap">
+      <div id="routes-list"></div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="wrap faq-inner">
+      <h2 class="section-title">Why this order?</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h3>Why budget before saving?</h3>
+          <p>You can't direct money you can't see. A quick picture of income and spending is what makes every later route possible — otherwise savings and debt targets are just guesses.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Why an emergency fund before extra debt payments?</h3>
+          <p>Without a cushion, the next surprise bill becomes new debt. A small starter fund breaks that cycle before you accelerate payoff.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Why debt before investing?</h3>
+          <p>High-interest debt is a guaranteed negative return. Clearing it first (after capturing any employer match) usually beats uncertain market gains.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Is this financial advice?</h3>
+          <p>No. This is general education, not personalized advice. For decisions specific to your situation, talk to a licensed financial professional.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <a class="logo" href="#top">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Routes
+      </a>
+      <p class="footer-note">Educational content only — not financial, legal, or tax advice. Always consider your own circumstances or consult a licensed professional.</p>
+    </div>
+    <p class="footer-copy">Built to help you find your way, at your own pace.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
