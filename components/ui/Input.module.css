@@ -1,0 +1,40 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+}
+
+.input {
+  height: var(--control-height-min);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-control);
+  border: 0.5px solid var(--color-border);
+  background: var(--color-surface);
+  font-family: var(--font-ui);
+  font-size: var(--text-body);
+  color: var(--color-text-primary);
+}
+
+/* Focus ring, not a border-colour-only change (Design System Section 4.3 /
+   Section 8 — colour is never the sole carrier of meaning). */
+.input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-color: var(--color-accent);
+}
+
+.inputError {
+  border-left: 3px solid var(--color-negative);
+}
+
+.errorText {
+  font-size: var(--text-caption);
+  color: var(--color-negative);
+  margin: 0;
+}

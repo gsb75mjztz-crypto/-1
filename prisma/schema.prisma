@@ -15,6 +15,15 @@
 // present to persist magic-link tokens and (optionally) sessions. They are
 // pure auth plumbing, not new product data. See the build report for the
 // full explanation.
+//
+// Milestone 1 completion-audit fixes: Session previously had no primary
+// key (only a unique index on sessionToken) — added a real `id` column,
+// matching the official Auth.js Prisma adapter reference schema and giving
+// the table an actual PRIMARY KEY, not just a unique constraint. Also added
+// @@index([userId]) to SavedComparison, Account, and Session — the audit
+// found every foreign-key-to-users column unindexed, meaning "this user's
+// saved comparisons/accounts/sessions" would be a sequential scan at any
+// real scale.
 
 generator client {
   provider = "prisma-client-js"
@@ -75,6 +84,7 @@ model SavedComparison {
 
   funds            SavedComparisonFund[]
 
+  @@index([userId])
   @@map("saved_comparisons")
 }
 
@@ -112,15 +122,18 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
+  @@index([userId])
   @@map("accounts")
 }
 
 model Session {
+  id           String   @id @default(uuid()) @db.Uuid
   sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id") @db.Uuid
   expires      DateTime @db.Timestamptz(6)
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("sessions")
 }
 

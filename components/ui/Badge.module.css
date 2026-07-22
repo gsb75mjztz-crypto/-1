@@ -1,0 +1,79 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* Pill shape is reserved exclusively for this component (Design System
+   Section 4.5) — --radius-pill must not be used anywhere else. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+}
+
+.high {
+  color: var(--color-confidence-high-text);
+  background: var(--color-confidence-high-bg);
+}
+
+.medium {
+  color: var(--color-confidence-medium-text);
+  background: var(--color-confidence-medium-bg);
+}
+
+.low {
+  color: var(--color-confidence-low-text);
+  background: var(--color-confidence-low-bg);
+}
+
+.infoButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.infoButton:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 280px;
+  max-width: calc(100vw - var(--space-8));
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 0.5px solid var(--color-border);
+  border-radius: var(--radius-card);
+  font-size: var(--text-caption);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-body);
+  /* Depth from border + surface contrast only, no box-shadow — same rule
+     as Cards (Design System Section 4.1), applied here for consistency. */
+}
+
+.panelLink {
+  color: var(--color-accent);
+  font-weight: var(--weight-medium);
+}
