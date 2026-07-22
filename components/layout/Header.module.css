@@ -66,6 +66,16 @@
   border-top: 0.5px solid var(--color-border);
 }
 
+/* The element is always mounted now (see Header.tsx) and toggled via the
+   native `hidden` attribute rather than conditional rendering, so its
+   accessibility-tree presence always matches aria-controls/aria-expanded.
+   `[hidden]` needs an explicit override here — an author stylesheet's
+   `display: flex` above would otherwise beat the UA stylesheet's
+   `[hidden] { display: none }` and defeat the attribute entirely. */
+.mobileNav[hidden] {
+  display: none;
+}
+
 .mobileNav a {
   color: var(--color-text-primary);
   text-decoration: none;

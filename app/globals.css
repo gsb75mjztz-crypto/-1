@@ -110,3 +110,44 @@ a {
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
+
+/* Text-colour utilities — replaces the inline style={{ color: ... }} objects
+   that had crept into several Milestone 1 pages (flagged in the completion
+   audit as duplication/inconsistency with the rest of the codebase, which
+   otherwise uses CSS Modules throughout). */
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+/* Shared prose rhythm for long-form content pages (Methodology, Terms,
+   Privacy, Disclaimer) — one place to keep heading/paragraph/list spacing
+   consistent instead of restyling each legal page individually. */
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 640px;
+}
+
+.prose section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.prose p,
+.prose li {
+  color: var(--color-text-secondary);
+}
+
+.prose ul {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}

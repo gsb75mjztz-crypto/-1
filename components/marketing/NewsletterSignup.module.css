@@ -1,0 +1,35 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 440px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+
+.field {
+  width: 100%;
+}
+
+.confirm {
+  color: var(--color-accent);
+  font-weight: var(--weight-medium);
+}
+
+.errorText {
+  color: var(--color-negative);
+  font-size: var(--text-caption);
+  margin: 0;
+}
+
+@media (min-width: 480px) {
+  .form {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+}
