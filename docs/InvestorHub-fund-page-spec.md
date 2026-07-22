@@ -1,5 +1,7 @@
 # InvestorHub — Fund Detail Page Spec (Final MVP Model)
 
+> **Superseded by [`InvestorHub-etf-page-build-spec.md`](./InvestorHub-etf-page-build-spec.md).** Kept for history; do not build against this version.
+
 Reference template for a single fund's data page within the ETF Comparison Tool. This is the final model for MVP.
 
 ## Example: VWRP
