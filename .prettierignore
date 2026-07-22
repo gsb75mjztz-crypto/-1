@@ -1,0 +1,9 @@
+.next
+node_modules
+prisma/migrations
+package-lock.json
+
+# Not part of this app — installed Claude Code plugin content and
+# already-published product docs (kept in their own formatting).
+.claude
+docs

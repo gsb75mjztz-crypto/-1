@@ -1,0 +1,136 @@
+// InvestorHub — Prisma schema
+//
+// Source of truth: docs/InvestorHub-technical-architecture.md (Section 3) and
+// docs/InvestorHub-data-strategy.md (Section 3). This file holds ONLY the
+// genuinely dynamic, per-user, or automatically-refreshed data. Curated fund
+// static data (fees, holdings, allocations) intentionally does NOT live here —
+// it lives as version-controlled JSON under /data/funds, per the architecture
+// doc's explicit "files, not a database table" decision.
+//
+// Deviation from the docs, explained: the docs' schema lists four tables
+// (fund_performance, users, saved_comparisons, saved_comparison_funds). This
+// file adds three more — Account, Session, VerificationToken — because the
+// magic-link auth architecture (Auth.js / next-auth, per Technical
+// Architecture Section 5) requires its Prisma adapter to have these models
+// present to persist magic-link tokens and (optionally) sessions. They are
+// pure auth plumbing, not new product data. See the build report for the
+// full explanation.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Connection URL lives in prisma.config.ts (Prisma 7 requirement), not here.
+// The runtime Prisma Client connects via a driver adapter — see lib/prisma.ts.
+datasource db {
+  provider = "postgresql"
+}
+
+// --- Product data -----------------------------------------------------
+
+/// The one piece of fund data that changes without a deploy (Technical
+/// Architecture Section 3). Keyed by ticker against the /data/funds JSON
+/// files by convention, not a database foreign key — those files are not a
+/// database table, so there is nothing to reference.
+model FundPerformance {
+  ticker                String   @id
+  return1m              Decimal? @map("return_1m") @db.Decimal(6, 3)
+  returnYtd             Decimal? @map("return_ytd") @db.Decimal(6, 3)
+  return1y              Decimal? @map("return_1y") @db.Decimal(6, 3)
+  return3y              Decimal? @map("return_3y") @db.Decimal(6, 3)
+  return5y              Decimal? @map("return_5y") @db.Decimal(6, 3)
+  returnSinceLaunch     Decimal? @map("return_since_launch") @db.Decimal(6, 3)
+  source                String   @default("Financial Modeling Prep")
+  marketDataUpdatedAt   DateTime @map("market_data_updated_at") @db.Timestamptz(6)
+
+  @@map("fund_performance")
+}
+
+model User {
+  id                   String            @id @default(uuid()) @db.Uuid
+  email                String            @unique
+  newsletterSubscribed Boolean           @default(false) @map("newsletter_subscribed")
+  createdAt            DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  // Auth.js-required fields (not in the original docs' users table — see
+  // header note). Nullable/optional so they don't change the shape of the
+  // product-facing user record described in the docs.
+  name                 String?
+  image                String?
+  emailVerified        DateTime?         @map("email_verified") @db.Timestamptz(6)
+
+  accounts             Account[]
+  sessions             Session[]
+  savedComparisons     SavedComparison[]
+
+  @@map("users")
+}
+
+model SavedComparison {
+  id               String                @id @default(uuid()) @db.Uuid
+  userId           String                @map("user_id") @db.Uuid
+  user             User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  calculatorState  Json?                 @map("calculator_state")
+  savedAt          DateTime              @default(now()) @map("saved_at") @db.Timestamptz(6)
+
+  funds            SavedComparisonFund[]
+
+  @@map("saved_comparisons")
+}
+
+/// Proper join table instead of a UUID[] column (Technical Architecture
+/// Section 3 explicitly calls this out as the v1-schema mistake it fixes).
+model SavedComparisonFund {
+  savedComparisonId String          @map("saved_comparison_id") @db.Uuid
+  savedComparison   SavedComparison @relation(fields: [savedComparisonId], references: [id], onDelete: Cascade)
+  ticker            String
+  position          Int             @db.SmallInt
+
+  @@id([savedComparisonId, ticker])
+  @@map("saved_comparison_funds")
+}
+
+// --- Auth.js adapter models (infrastructure, not product data) --------
+// Standard shape required by @auth/prisma-adapter. Session strategy is
+// configured as JWT (see lib/auth.ts), so the Session table is not
+// populated in normal operation, but the adapter's generated code
+// references all four models unconditionally, so it must exist.
+
+model Account {
+  userId            String  @map("user_id") @db.Uuid
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id") @db.Uuid
+  expires      DateTime @db.Timestamptz(6)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+/// Stores the single-use magic-link tokens — this table is what actually
+/// implements "magic link" auth (Technical Architecture Section 5).
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime @db.Timestamptz(6)
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}

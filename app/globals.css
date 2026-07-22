@@ -1,0 +1,112 @@
+/* InvestorHub design tokens — verbatim from docs/InvestorHub-design-system.md
+   Section 2. Do not substitute or "round" any value here; the Design System
+   doc's Pre-Implementation Checklist requires exact token values. */
+:root {
+  /* Colour — base */
+  --color-bg: #faf8f4;
+  --color-surface: #ffffff;
+  --color-text-primary: #211f1c;
+  --color-text-secondary: #6b6862;
+  --color-text-muted: #9a968d;
+  --color-border: #e4e0d8;
+
+  /* Colour — accent */
+  --color-accent: #0f6e56;
+  --color-accent-tint: #e1f5ee;
+  --color-accent-secondary: #d85a30; /* sparing use only — never a primary CTA fill */
+
+  /* Colour — data states */
+  --color-positive: #3b6d11;
+  --color-negative: #a32d2d;
+
+  /* Colour — confidence badge system (Design System Section 6) */
+  --color-confidence-high-text: #3b6d11;
+  --color-confidence-high-bg: #eaf3de;
+  --color-confidence-medium-text: #854f0b;
+  --color-confidence-medium-bg: #faeeda;
+  --color-confidence-low-text: #791f1f;
+  --color-confidence-low-bg: #fcebeb;
+
+  /* Typography */
+  --font-ui: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --text-h1: 1.75rem; /* 28px */
+  --text-h2: 1.375rem; /* 22px */
+  --text-h3: 1.125rem; /* 18px */
+  --text-body: 1rem; /* 16px */
+  --text-caption: 0.8125rem; /* 13px */
+  --line-height-body: 1.6;
+  --line-height-heading: 1.25;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  /* No other weights exist in this system. Do not introduce 600/700. */
+
+  /* Radius */
+  --radius-card: 12px;
+  --radius-control: 8px;
+  --radius-pill: 999px; /* reserved for the confidence badge only */
+
+  /* Spacing — 4px base scale, use these tokens only, no arbitrary values */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Sizing */
+  --control-height-min: 40px; /* inputs, buttons */
+  --tap-target-min: 44px; /* table rows, list items — mobile touch target floor */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-ui);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--line-height-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--weight-medium);
+  line-height: var(--line-height-heading);
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--text-h1);
+}
+h2 {
+  font-size: var(--text-h2);
+}
+h3 {
+  font-size: var(--text-h3);
+}
+
+a {
+  color: var(--color-accent);
+}
+
+/* Every numeric value in a column, comparison, or table must use this —
+   Design System Section 3. Applied as a utility class rather than a global
+   selector since not all numbers on a page are tabular data. */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
