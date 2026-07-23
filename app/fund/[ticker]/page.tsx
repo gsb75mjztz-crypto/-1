@@ -7,6 +7,7 @@ import { PerformanceGrid } from "@/components/etf/PerformanceGrid";
 import { EtfPageTabs } from "@/components/etf/EtfPageTabs";
 import { FundHistoryPanel } from "@/components/etf/FundHistoryPanel";
 import { DataQuality } from "@/components/etf/DataQuality";
+import { Button } from "@/components/ui/Button";
 import { getAllFundTickers, getFundByTicker } from "@/lib/funds";
 import {
   feesHoldingsConfidence,
@@ -107,6 +108,17 @@ export default async function FundPage({
           dateIso={fund.feesPublished}
           status={feesStatus}
         />
+        {/* PRD Section 3 / User Flows Stage 1 detour, step 9: "See fee
+            impact over time" on the Fees section, carrying this fund's
+            OCF as one Calculator input via the same query-param bridge
+            the shareable-link feature already uses — no new plumbing. */}
+        <Button
+          href={`/calculator?feeA=${fund.ocf}`}
+          variant="secondary"
+          className={styles.feeImpactLink}
+        >
+          See fee impact over time
+        </Button>
       </section>
 
       <section className={styles.section}>

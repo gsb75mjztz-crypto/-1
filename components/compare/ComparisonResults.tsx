@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { AllocationTable } from "@/components/etf/AllocationTable";
 import { SourceAttribution } from "@/components/etf/SourceAttribution";
 import { MetricExplain } from "@/components/compare/MetricExplain";
@@ -25,6 +26,7 @@ export function ComparisonResults({ funds }: { funds: ComparableFund[] }) {
       .slice(i + 1)
       .map((fundB): [ComparableFund, ComparableFund] => [fundA, fundB]),
   );
+  const [bridgeFundA, bridgeFundB] = funds;
 
   return (
     <div className={styles.wrapper}>
@@ -175,6 +177,24 @@ export function ComparisonResults({ funds }: { funds: ComparableFund[] }) {
           </Card>
         ))}
       </div>
+
+      {/* User Flows Stage 2, step 10 — the primary bridge CTA into the
+          Calculator, pre-filling *both* selected funds' actual OCFs (per
+          PRD US-4 AC1), distinct from the per-fund "See fee impact" link
+          on the Individual ETF Page. The Calculator itself only models
+          two fee scenarios (A vs B), so when three funds are selected
+          this carries the first two — consistent with there being no
+          three-way fee-drag concept anywhere else in the product. */}
+      {bridgeFundA && bridgeFundB && (
+        <div className={styles.calculatorBridge}>
+          <Button
+            href={`/calculator?feeA=${bridgeFundA.ocf}&feeB=${bridgeFundB.ocf}`}
+            variant="secondary"
+          >
+            See what this fee difference costs over time
+          </Button>
+        </div>
+      )}
 
       {/* LOCKED copy, Design System Section 7 — must render on every page
           displaying fund data, comparison results included, without

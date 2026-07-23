@@ -131,6 +131,24 @@ a {
   color: var(--color-text-muted);
 }
 
+/* Standard visually-hidden pattern (content stays in the accessibility
+   tree, removed from visual layout) — needed by the Calculator's growth
+   chart, which pairs an SVG (uninformative to screen readers on its own)
+   with a real data table conveying the same figures. Kept in the shared
+   utilities section rather than a component module since it's a generic
+   primitive, not chart-specific. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Shared prose rhythm for long-form content pages (Methodology, Terms,
    Privacy, Disclaimer) — one place to keep heading/paragraph/list spacing
    consistent instead of restyling each legal page individually. */

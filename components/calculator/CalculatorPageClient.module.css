@@ -1,0 +1,53 @@
+.header {
+  padding: var(--space-6) 0 var(--space-4);
+  max-width: 640px;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  max-width: 480px;
+}
+
+.growthRateHint {
+  grid-column: 1 / -1;
+  margin-top: calc(var(--space-4) * -1);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+.shareBar {
+  margin: var(--space-8) 0 var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 0.5px solid var(--color-border);
+}
+
+@media (min-width: 640px) {
+  .form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Design System Section 5: "Long scrolling pages (Calculator) get a
+   bottom-anchored primary action button, fixed in the viewport." */
+@media (max-width: 639px) {
+  .shareBar {
+    position: sticky;
+    bottom: 0;
+    background: var(--color-bg);
+    margin: var(--space-6) calc(var(--space-4) * -1) 0;
+    padding: var(--space-3) var(--space-4);
+    border-top: 0.5px solid var(--color-border);
+  }
+
+  .shareBar button {
+    width: 100%;
+  }
+}

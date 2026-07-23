@@ -62,6 +62,10 @@
   color: var(--color-text-primary);
 }
 
+.feeImpactLink {
+  margin-top: var(--space-4);
+}
+
 .holdingsGrid {
   display: flex;
   flex-direction: column;

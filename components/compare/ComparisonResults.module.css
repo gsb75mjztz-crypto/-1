@@ -90,6 +90,11 @@
   margin-bottom: var(--space-2);
 }
 
+.calculatorBridge {
+  padding-top: var(--space-4);
+  border-top: 0.5px solid var(--color-border);
+}
+
 .disclaimer {
   margin: var(--space-2) 0 var(--space-6);
   padding-top: var(--space-4);
