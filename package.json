@@ -12,7 +12,8 @@
     "postinstall": "prisma generate",
     "db:seed": "tsx prisma/seed.ts",
     "update-fund": "tsx scripts/update-fund.ts",
-    "test": "tsx --test lib/overlap.test.ts lib/confidence.test.ts lib/fundSchema.test.ts lib/comboboxNav.test.ts lib/growthCalculator.test.ts lib/calculatorDefaults.test.ts lib/siteUrl.test.ts"
+    "test": "tsx --test \"lib/**/*.test.ts\"",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.3",
@@ -28,6 +29,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.61.1",
     "@types/node": "^20",
     "@types/nodemailer": "^8.0.1",
     "@types/pg": "^8.20.0",

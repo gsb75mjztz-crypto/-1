@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isValidIsinCheckDigit } from "@/lib/isin";
 
 // Validates the shape of every /data/funds/<TICKER>.json file. Per
 // docs/InvestorHub-data-strategy.md Section 3, these files are the source
@@ -15,8 +16,10 @@ import { z } from "zod";
 
 export const tickerPattern = /^[A-Z0-9]{2,8}$/;
 // Standard 12-character ISIN shape (2-letter country code + 9
-// alphanumeric + 1 numeric check digit). Format only — this does not
-// verify the Luhn-style check digit itself.
+// alphanumeric + 1 numeric check digit). The check digit itself is
+// verified separately below via isValidIsinCheckDigit (Milestone 7 — this
+// comment used to say the opposite; a data-integrity testing pass is what
+// closed the gap it was describing).
 const isinPattern = /^[A-Z]{2}[A-Z0-9]{9}[0-9]$/;
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -53,7 +56,8 @@ export const fundSchema = z.object({
     .regex(tickerPattern, "Expected an uppercase ticker, e.g. VWRP"),
   isin: z
     .string()
-    .regex(isinPattern, "Expected a 12-character ISIN, e.g. IE00BK5BQT80"),
+    .regex(isinPattern, "Expected a 12-character ISIN, e.g. IE00BK5BQT80")
+    .refine(isValidIsinCheckDigit, "ISIN check digit does not match"),
   name: z.string().min(1),
   issuer: z.string().min(1),
   // Ongoing Charges Figure, as a percentage (0.19 means 0.19%, not 19%).

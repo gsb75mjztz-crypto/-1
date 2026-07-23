@@ -216,3 +216,98 @@ describe("calculateFeeDrag", () => {
     assert.ok(result.costDifference < result.scenarioA.finalValue * 0.1);
   });
 });
+
+// Milestone 7 — edge cases beyond the happy path, per the milestone's
+// explicit "test calculator accuracy" objective.
+describe("calculateGrowth — edge cases", () => {
+  test("fee exceeding growth rate produces negative total growth, not a crash or a floor at zero", () => {
+    // GrowthResult's own type comment says totalGrowth "can be negative
+    // only if annualFeeRate exceeds annualGrowthRate" — that branch had
+    // no direct test until now.
+    const result = calculateGrowth({
+      startingAmount: 1000,
+      monthlyContribution: 0,
+      years: 5,
+      annualGrowthRate: 0.01,
+      annualFeeRate: 0.03,
+    });
+    assert.ok(result.totalGrowth < 0);
+    assert.ok(result.finalValue < result.totalContributed);
+    // Still arithmetically consistent even in the loss case.
+    closeTo(
+      result.totalGrowth,
+      result.finalValue - result.totalContributed,
+      1e-9,
+    );
+  });
+
+  test("zero starting amount with contributions still grows correctly (contribution-only scenario)", () => {
+    const result = calculateGrowth({
+      startingAmount: 0,
+      monthlyContribution: 100,
+      years: 1,
+      annualGrowthRate: 0.06,
+      annualFeeRate: 0,
+    });
+    assert.equal(result.totalContributed, 100 * 12);
+    assert.ok(result.finalValue > result.totalContributed);
+  });
+
+  test("zero starting amount and zero contribution stays flat at zero for the whole horizon", () => {
+    const result = calculateGrowth({
+      startingAmount: 0,
+      monthlyContribution: 0,
+      years: 10,
+      annualGrowthRate: 0.07,
+      annualFeeRate: 0.01,
+    });
+    assert.equal(result.finalValue, 0);
+    assert.equal(result.totalContributed, 0);
+    assert.equal(result.totalGrowth, 0);
+    assert.ok(result.series.every((point) => point.value === 0));
+  });
+
+  test("a long horizon (50 years, the Calculator's upper bound) produces a finite, sane result", () => {
+    const result = calculateGrowth({
+      startingAmount: 10_000_000, // CALCULATOR_BOUNDS.startingAmount.max
+      monthlyContribution: 100_000, // CALCULATOR_BOUNDS.monthlyContribution.max
+      years: 50, // CALCULATOR_BOUNDS.years.max
+      annualGrowthRate: 0.2, // CALCULATOR_BOUNDS.annualGrowthRatePercent.max
+      annualFeeRate: 0,
+    });
+    assert.ok(Number.isFinite(result.finalValue));
+    assert.ok(result.finalValue > 0);
+    assert.equal(result.series.length, 51);
+  });
+});
+
+describe("calculateFeeDrag — edge cases", () => {
+  test("zero monthly contribution (lump sum only) still isolates fee drag correctly", () => {
+    const result = calculateFeeDrag({
+      startingAmount: 10000,
+      monthlyContribution: 0,
+      years: 20,
+      annualGrowthRate: 0.05,
+      feeRateA: 0.02,
+      feeRateB: 0.001,
+    });
+    assert.equal(result.scenarioA.totalContributed, 10000);
+    assert.equal(result.scenarioB.totalContributed, 10000);
+    assert.ok(result.costDifference > 0);
+  });
+
+  test("both fees exceeding the growth rate still produces a correctly-signed, finite cost difference", () => {
+    const result = calculateFeeDrag({
+      startingAmount: 1000,
+      monthlyContribution: 50,
+      years: 10,
+      annualGrowthRate: 0.01,
+      feeRateA: 0.05,
+      feeRateB: 0.03,
+    });
+    assert.ok(result.scenarioA.totalGrowth < 0);
+    assert.ok(result.scenarioB.totalGrowth < 0);
+    assert.ok(Number.isFinite(result.costDifference));
+    assert.ok(result.costDifference > 0);
+  });
+});

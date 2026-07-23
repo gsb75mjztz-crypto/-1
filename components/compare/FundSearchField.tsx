@@ -151,9 +151,17 @@ export function FundSearchField({
   }
 
   const activeIndexForDisplay = toDisplayIndex(activeIndex);
-  const activeOptionId = results[activeIndexForDisplay]
-    ? `${listboxId}-option-${results[activeIndexForDisplay].ticker}`
-    : undefined;
+  // Only meaningful — and only valid per the WAI-ARIA combobox pattern —
+  // while the listbox is actually open and rendered. Milestone 7's
+  // automated accessibility scan (axe-core) caught this: computing
+  // activeOptionId regardless of `open` meant aria-activedescendant kept
+  // pointing at an <li> id that doesn't exist in the DOM whenever the
+  // listbox was closed, an "aria-valid-attr-value" violation on every
+  // page load before either search field had been interacted with.
+  const activeOptionId =
+    open && results[activeIndexForDisplay]
+      ? `${listboxId}-option-${results[activeIndexForDisplay].ticker}`
+      : undefined;
 
   return (
     <div className={styles.field}>

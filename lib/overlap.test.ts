@@ -73,4 +73,68 @@ describe("calculateOverlap", () => {
       `expected ~22.3, got ${overlap}`,
     );
   });
+
+  // Milestone 7 — "test comparison accuracy": the Comparison Tool computes
+  // all pairs when three funds are selected, but only one pair (above)
+  // had ever been hand-verified against real data. Extending to the
+  // other two real pairs this dataset makes possible.
+  test("matches a hand-computed result against real curated fund data (VWRP vs HMWO)", () => {
+    const vwrp = getFundByTicker("VWRP");
+    const hmwo = getFundByTicker("HMWO");
+    assert.ok(vwrp && hmwo, "expected VWRP and HMWO to exist in /data/funds");
+
+    // Independently computed in Python from the raw JSON before writing
+    // this assertion (see the Milestone 7 testing report) — coincidentally
+    // equal to the VWRP/VUAG figure above, because VWRP's per-holding
+    // weight is the smaller of the pair in every single shared holding
+    // against both other funds (it's the most diversified of the three),
+    // not because the underlying data is the same.
+    const overlap = calculateOverlap(vwrp!.topHoldings, hmwo!.topHoldings);
+    assert.ok(
+      Math.abs(overlap - 22.3) < 0.001,
+      `expected ~22.3, got ${overlap}`,
+    );
+  });
+
+  test("matches a hand-computed result against real curated fund data (VUAG vs HMWO)", () => {
+    const vuag = getFundByTicker("VUAG");
+    const hmwo = getFundByTicker("HMWO");
+    assert.ok(vuag && hmwo, "expected VUAG and HMWO to exist in /data/funds");
+
+    // Independently computed in Python from the raw JSON before writing
+    // this assertion. All 10 of VUAG's and HMWO's holdings are shared
+    // (both lists include Eli Lilly, neither includes Taiwan Semi) —
+    // the only one of the three real pairs with full 10/10 name overlap.
+    const overlap = calculateOverlap(vuag!.topHoldings, hmwo!.topHoldings);
+    assert.ok(
+      Math.abs(overlap - 26.73) < 0.001,
+      `expected ~26.73, got ${overlap}`,
+    );
+  });
+
+  test("matching is exact-string and case-sensitive, as documented in lib/overlap.ts — a near-miss name does not count as shared", () => {
+    // Locks in the documented trade-off (no fuzzy/normalised matching)
+    // so a future change can't silently start or stop matching
+    // case/whitespace variants without a test noticing.
+    const a = [{ name: "Apple Inc", weight: 5 }];
+    const differentCase = [{ name: "apple inc", weight: 5 }];
+    const trailingSpace = [{ name: "Apple Inc ", weight: 5 }];
+    assert.equal(calculateOverlap(a, differentCase), 0);
+    assert.equal(calculateOverlap(a, trailingSpace), 0);
+  });
+
+  test("a duplicate holding name within one list is not double-counted against the same name in the other list", () => {
+    // Map-based lookup means only the last occurrence of a repeated name
+    // in holdingsB survives — documenting the actual behaviour rather
+    // than assuming duplicates can't happen in real data.
+    const a = [{ name: "Apple Inc", weight: 5 }];
+    const bWithDuplicate = [
+      { name: "Apple Inc", weight: 2 },
+      { name: "Apple Inc", weight: 3 },
+    ];
+    const result = calculateOverlap(a, bWithDuplicate);
+    // min(5, 3) — the second occurrence's weight wins in the Map, not the
+    // sum of both.
+    assert.equal(result, 3);
+  });
 });
