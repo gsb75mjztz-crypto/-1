@@ -1,0 +1,59 @@
+name: CI
+
+# Technical Architecture Section 6: "GitHub Actions -- lint/type-check/tests
+# on every PR; merge to main deploys to production. Fund data changes go
+# through this exact same pipeline, which is what makes 'review before it
+# goes live' a property of the process rather than a bolted-on manual
+# step." This workflow is that gate. It didn't exist before Milestone 4 --
+# every regression up to this point was caught by manual, one-off audits
+# instead. Adding this now was explicitly approved as part of Milestone 4's
+# scope (see handover/Milestone-4.md).
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: investorhub_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      # Build-time DB dependency, per README: ETF and comparison pages
+      # fetch fund_performance via Prisma during static generation, so a
+      # build with no reachable database fails by design, not by accident.
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/investorhub_ci
+      AUTH_SECRET: ci-placeholder-secret-not-used-for-anything-real
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npx tsc --noEmit
+
+      - run: npx prisma migrate deploy
+
+      - run: npm run test
+
+      - run: npm run db:seed
+
+      - run: npm run build

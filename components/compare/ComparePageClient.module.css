@@ -1,0 +1,26 @@
+.header {
+  padding: var(--space-6) 0 var(--space-2);
+}
+
+.emptyState {
+  padding: var(--space-4) 0 var(--space-6);
+}
+
+.emptyState h2 {
+  margin-bottom: var(--space-2);
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 480px;
+}
+
+.addThird {
+  margin-top: var(--space-3);
+}
+
+.compareButton {
+  margin-top: var(--space-6);
+}

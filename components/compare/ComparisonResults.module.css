@@ -1,0 +1,114 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin-top: var(--space-6);
+}
+
+.overlapSection h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.overlapList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.overlapList li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 0.5px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.overlapList li:last-child {
+  border-bottom: none;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.fundCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.fundCard h2 {
+  margin: 0;
+}
+
+.fundCard h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+}
+
+.metricRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  max-width: 320px;
+}
+
+.metricRow .text-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.metricValue {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+}
+
+.performanceGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-width: 320px;
+}
+
+.holdingsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-bottom: var(--space-2);
+}
+
+.disclaimer {
+  margin: var(--space-2) 0 var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 0.5px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+}
+
+/* Desktop: side-by-side cards, per Design System Section 4.1 (card-based
+   comparison output). Mobile stays single-column (Section 5) via the
+   .grid default above. */
+@media (min-width: 720px) {
+  .grid {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .fundCard {
+    flex: 1;
+    min-width: 0;
+  }
+}
