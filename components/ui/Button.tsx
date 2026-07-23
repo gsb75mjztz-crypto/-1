@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
+import { cn } from "@/lib/cn";
 import styles from "./Button.module.css";
 
 // Design System Section 4.4. Three variants only — primary, secondary,
@@ -37,9 +38,7 @@ export function Button({
     secondary: styles.secondary,
     ghost: styles.ghost,
   }[variant];
-  const classes = [styles.button, variantClass, className]
-    .filter(Boolean)
-    .join(" ");
+  const classes = cn(styles.button, variantClass, className);
 
   if (href !== undefined) {
     return (

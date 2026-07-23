@@ -21,7 +21,7 @@ Calm confidence, not institutional authority. One primary number or insight per 
   --color-surface: #FFFFFF;
   --color-text-primary: #211F1C;
   --color-text-secondary: #6B6862;
-  --color-text-muted: #9A968D;
+  --color-text-muted: #716D63; /* corrected post-Milestone-2 audit — see below */
   --color-border: #E4E0D8;
 
   /* Colour — accent */
@@ -164,6 +164,7 @@ This is a non-optional template element (per PRD FR-10) — it must be part of t
 - WCAG 2.1 AA baseline (PRD NFR-2).
 - **Colour is never the sole carrier of meaning**, anywhere in the product — applies to confidence badges (colour + text label, always), form errors (colour + message text), and data states (gain/loss shown with colour + a +/− sign or arrow, not colour alone).
 - **VERIFY:** every text/background colour pairing in Section 2 against WCAG AA contrast thresholds (4.5:1 normal text, 3:1 large text/UI components) using an automated tool (e.g. axe-core, Stark) before merge. The palette in this document is designed with AA compliance as the intent, but exact contrast ratios have not been computationally verified in this document and must not be assumed correct without that check — this is the one place in this spec where "designed to pass" and "confirmed to pass" are different claims, and only the second one clears the bar.
+  - **Update, Milestone 2 audit:** `--color-text-muted` was computed (WCAG relative-luminance formula) and failed — 2.78:1 on `--color-bg`, 2.95:1 on `--color-surface`, both below even the 3:1 large-text floor. Corrected to `#716D63` (4.86:1 / 5.16:1). `--color-text-secondary`, `--color-accent` on `--color-accent-tint`, and `--color-accent-secondary` on `--color-surface` were also computed and pass. The remaining pairings in Section 2 (confidence badge colours, `--color-negative`/`--color-positive`) are still unverified — this line item stays open for those until they're actually used and checked.
 - Focus states must be visible via a non-colour cue (2px ring, per Section 4.3) for keyboard navigation throughout.
 
 ---

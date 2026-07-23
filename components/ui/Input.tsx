@@ -2,6 +2,7 @@
 
 import { useId } from "react";
 import type { InputHTMLAttributes } from "react";
+import { cn } from "@/lib/cn";
 import styles from "./Input.module.css";
 
 // Design System Section 4.3 ("Forms"). Label is a required prop, not an
@@ -27,9 +28,7 @@ export function Input({
       </label>
       <input
         id={inputId}
-        className={[styles.input, error && styles.inputError, className]
-          .filter(Boolean)
-          .join(" ")}
+        className={cn(styles.input, error && styles.inputError, className)}
         aria-invalid={error ? true : undefined}
         aria-describedby={errorId}
         {...rest}

@@ -9,6 +9,10 @@
   max-width: 640px;
 }
 
+.notice p {
+  margin: 0;
+}
+
 .notice strong {
   color: var(--color-text-primary);
 }

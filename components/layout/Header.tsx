@@ -85,9 +85,6 @@ export function Header() {
         <Link href="/privacy" onClick={() => setMenuOpen(false)}>
           Privacy
         </Link>
-        <Link href="/disclaimer" onClick={() => setMenuOpen(false)}>
-          Disclaimer
-        </Link>
         <Link href="/contact" onClick={() => setMenuOpen(false)}>
           Contact
         </Link>

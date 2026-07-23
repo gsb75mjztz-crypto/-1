@@ -16,6 +16,14 @@ import styles from "./page.module.css";
 // opposite of what's true. Real ticker names (VUAG/VWRP) appear only in
 // prose, as the Brief's own illustrative pain-point question — never
 // attached to a number, per the Legal Principles doc's content rules.
+//
+// Milestone 2 audit fix: the example numbers are a deliberate trade-off
+// (Fund A cheaper, Fund B a higher return) rather than one fund winning on
+// every displayed metric. An earlier version had Fund A dominate both
+// figures — even fictional and clearly labelled, an example that always
+// pairs "cheaper" with "better returns" teaches an implicit pattern in a
+// product whose whole trust position rests on never implying a verdict,
+// including by accident, including in throwaway marketing copy.
 export default function Home() {
   return (
     <>
@@ -62,7 +70,7 @@ export default function Home() {
               </div>
               <div className={styles.exampleRow}>
                 <span>5-year return</span>
-                <strong>+41.2%</strong>
+                <strong>+38.4%</strong>
               </div>
             </Card>
             <Card className={styles.exampleCard}>
@@ -74,7 +82,7 @@ export default function Home() {
               </div>
               <div className={styles.exampleRow}>
                 <span>5-year return</span>
-                <strong>+38.6%</strong>
+                <strong>+41.1%</strong>
               </div>
             </Card>
           </div>

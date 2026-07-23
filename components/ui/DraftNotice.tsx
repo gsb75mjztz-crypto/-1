@@ -13,7 +13,7 @@ import styles from "./DraftNotice.module.css";
 export function DraftNotice({ children }: { children: ReactNode }) {
   return (
     <div role="note" className={styles.notice}>
-      {children}
+      <p>{children}</p>
     </div>
   );
 }

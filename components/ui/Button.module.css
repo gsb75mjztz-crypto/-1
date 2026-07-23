@@ -11,6 +11,11 @@
   font-weight: var(--weight-medium);
   line-height: 1;
   cursor: pointer;
+  /* Confirmed bug, Milestone 2 audit: when Button renders as a Link (an
+     <a> element) via the `href` prop, the browser's default anchor
+     underline was showing through uncontested. A button must never look
+     like an inline text link regardless of the underlying element. */
+  text-decoration: none;
   /* No box-shadow anywhere in the system (Design System Section 4.1). */
 }
 
