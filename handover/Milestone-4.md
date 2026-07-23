@@ -1,18 +1,23 @@
 # Milestone 4 — Comparison Tool (kickoff brief)
 
-**Status:** Not started. This is a forward-looking brief, not a retrospective — written before the work begins so scope and dependencies are explicit up front.
+**Status:** Complete — approved, pending `v4.0` tag. Originally written as a forward-looking brief before work began; the plan below is kept as-written for the record, with the actual outcome summarized here.
+
+## Outcome
+
+Built as planned: `lib/overlap.ts`, fund search/typeahead (Fuse.js), the real Comparison page and results UI, links from results into the fund detail pages (finally giving Milestone 3's work a reachable entry point), a CI workflow (`.github/workflows/ci.yml`), and unit tests for `lib/overlap.ts`, `lib/confidence.ts`, and `lib/fundSchema.ts` (29 tests total). Audited twice: the first completion audit found one Medium-severity bug (a keyboard-navigation ArrowDown handler that skipped past the pre-selected top search result) plus three Low-severity items — that Medium finding was fixed and re-verified with a full regression pass showing no side effects; of the three Low items, one (missing auto-focus when the optional third comparison field is revealed) was implemented, one (project-wide Markdown formatting debt in this very folder) was fixed, and one (duplicated disclosure-toggle logic between `Badge.tsx` and `MetricExplain.tsx`) was deliberately deferred — see `technical-debt-register.md` entry #1 for the reasoning and the condition that would trigger revisiting it.
 
 ## Why this, and why now
 
-`docs/InvestorHub-project-health-review.md` (performed after Milestone 3) found that after three milestones, the product's actual core loop — Product Brief v2's "single MVP loop": Comparison → Calculator → Save → Newsletter — was 0% functional. Worse, the Individual ETF Page built in Milestone 3 has no discoverable entry point in the shipped navigation, because the Information Architecture spec requires it to be reached *only* from a comparison result, and Comparison doesn't exist. This milestone is not "the next item on a list" — it's the specific, health-review-recommended correction: build the one thing that (a) is the actual product per the Product Brief, (b) matches Development Roadmap Week 3, and (c) makes Milestone 3's work reachable and useful for the first time.
+`docs/InvestorHub-project-health-review.md` (performed after Milestone 3) found that after three milestones, the product's actual core loop — Product Brief v2's "single MVP loop": Comparison → Calculator → Save → Newsletter — was 0% functional. Worse, the Individual ETF Page built in Milestone 3 has no discoverable entry point in the shipped navigation, because the Information Architecture spec requires it to be reached _only_ from a comparison result, and Comparison doesn't exist. This milestone is not "the next item on a list" — it's the specific, health-review-recommended correction: build the one thing that (a) is the actual product per the Product Brief, (b) matches Development Roadmap Week 3, and (c) makes Milestone 3's work reachable and useful for the first time.
 
 **Do not treat this as "pick the next convenient doc-scoped slice."** That pattern is what produced the current state. This milestone is anchored to the roadmap's own sequence deliberately.
 
 ## Objective, per the docs
 
-Per PRD US-1 and the Development Roadmap's Week 3 milestone: *"a user can search, select two real funds, and see a correct, fully-explained, verdict-free comparison."*
+Per PRD US-1 and the Development Roadmap's Week 3 milestone: _"a user can search, select two real funds, and see a correct, fully-explained, verdict-free comparison."_
 
 Acceptance criteria (PRD Section 4, US-1):
+
 - User can select 2–3 funds from the curated list — search-by-name/ticker within the tool itself (Fuse.js, client-side, per Technical Architecture Section 9 — no `/api/funds` endpoint, no server round-trip per keystroke).
 - Comparison displays: OCF, 1Y/3Y/5Y performance, top-level sector/region split, and a holdings-overlap percentage between the selected funds (FR-7).
 - Every metric has an inline "what this means" explanation accessible without leaving the page (tooltip/expandable — the pattern already exists in `components/ui/Badge.tsx`'s disclosure approach, reuse it rather than inventing a second one).
@@ -43,7 +48,7 @@ Acceptance criteria (PRD Section 4, US-1):
 
 ## Explicit non-goals for this milestone
 
-Per the Product Brief and PRD's own non-goals sections, restated here since they're what "don't build comparison functionality" (Milestone 3's constraint) was protecting against building too early: no Calculator (that's the next milestone, Week 4 — but its pre-fill bridge *from* Comparison should be left as a stubbed link/route, not built out), no Save/Account wiring beyond what already exists, no personalised recommendation of any kind, no ranking/sorting that could read as an endorsement (Legal Principles Section 3 — even a "most popular first" default sort needs a second look).
+Per the Product Brief and PRD's own non-goals sections, restated here since they're what "don't build comparison functionality" (Milestone 3's constraint) was protecting against building too early: no Calculator (that's the next milestone, Week 4 — but its pre-fill bridge _from_ Comparison should be left as a stubbed link/route, not built out), no Save/Account wiring beyond what already exists, no personalised recommendation of any kind, no ranking/sorting that could read as an endorsement (Legal Principles Section 3 — even a "most popular first" default sort needs a second look).
 
 ## When this milestone completes
 

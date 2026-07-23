@@ -111,6 +111,13 @@ export function ComparePageClient({ funds }: { funds: ComparableFund[] }) {
               setSlot(2, funds.find((full) => full.ticker === f.ticker) ?? null)
             }
             onClear={() => setSlot(2, null)}
+            // This field only ever mounts once, the moment it's first
+            // revealed (via the button below) — autoFocus is a native
+            // HTML behavior that fires exactly once at that point, not on
+            // every re-render, so a keyboard user who activates "Add a
+            // third fund" lands directly in the new field instead of
+            // having to Tab to it manually.
+            autoFocus
           />
         )}
       </div>

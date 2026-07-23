@@ -29,6 +29,7 @@ export function FundSearchField({
   selected,
   onSelect,
   onClear,
+  autoFocus = false,
 }: {
   label: string;
   funds: SearchableFund[];
@@ -38,6 +39,13 @@ export function FundSearchField({
   selected: SearchableFund | null;
   onSelect: (fund: SearchableFund) => void;
   onClear: () => void;
+  // Set true only for a field that has just been newly revealed (e.g. the
+  // optional third slot appearing after "Add a third fund") — a plain
+  // native `autoFocus` fires once on mount, which is exactly "focus this
+  // when it first appears," not "steal focus on every re-render." Never
+  // set for fields 1/2, which are present from page load and shouldn't
+  // grab focus away from wherever the user already is.
+  autoFocus?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -78,14 +86,23 @@ export function FundSearchField({
         setActiveIndex(0);
         return;
       }
+      // activeIndex is -1 whenever the top result is only *implicitly*
+      // highlighted (query just changed, no explicit navigation yet — see
+      // the onChange handler below). The first ArrowDown press should
+      // confirm that implicit highlight (move to index 0), not skip past
+      // it to index 1 — treating -1 as "one before index 0" here is what
+      // fixes that.
       setActiveIndex((i) => Math.min(i + 1, results.length - 1));
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       setActiveIndex((i) => Math.max(i - 1, 0));
     } else if (event.key === "Enter") {
-      if (open && activeIndex >= 0 && results[activeIndex]) {
+      // -1 means "the top result, implicitly" (see onChange) — Enter
+      // without ever touching the arrow keys still confirms it.
+      const effectiveIndex = activeIndex === -1 ? 0 : activeIndex;
+      if (open && results[effectiveIndex]) {
         event.preventDefault();
-        selectFund(results[activeIndex]);
+        selectFund(results[effectiveIndex]);
       }
     } else if (event.key === "Escape") {
       setOpen(false);
@@ -115,10 +132,14 @@ export function FundSearchField({
     );
   }
 
-  const activeOptionId =
-    activeIndex >= 0 && results[activeIndex]
-      ? `${listboxId}-option-${results[activeIndex].ticker}`
-      : undefined;
+  // -1 displays the same as 0 (the top result reads as highlighted even
+  // before the user has explicitly pressed an arrow key) — see the
+  // onChange/ArrowDown comments above for why the underlying state still
+  // distinguishes the two.
+  const displayIndex = activeIndex === -1 ? 0 : activeIndex;
+  const activeOptionId = results[displayIndex]
+    ? `${listboxId}-option-${results[displayIndex].ticker}`
+    : undefined;
 
   return (
     <div className={styles.field}>
@@ -131,12 +152,17 @@ export function FundSearchField({
         aria-autocomplete="list"
         aria-activedescendant={activeOptionId}
         autoComplete="off"
+        autoFocus={autoFocus}
         placeholder="Search by name or ticker"
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);
           setOpen(true);
-          setActiveIndex(0);
+          // -1, not 0: the top result is shown as highlighted (see
+          // displayIndex below) and Enter still confirms it, but a
+          // subsequent ArrowDown should land ON that top result rather
+          // than skip past it to the second one.
+          setActiveIndex(-1);
         }}
         onFocus={() => setOpen(true)}
         onBlur={() => {
@@ -163,9 +189,9 @@ export function FundSearchField({
                 key={fund.ticker}
                 id={`${listboxId}-option-${fund.ticker}`}
                 role="option"
-                aria-selected={index === activeIndex}
+                aria-selected={index === displayIndex}
                 className={
-                  index === activeIndex ? styles.optionActive : styles.option
+                  index === displayIndex ? styles.optionActive : styles.option
                 }
                 onMouseDown={(e) => {
                   // onMouseDown (not onClick) fires before the input's

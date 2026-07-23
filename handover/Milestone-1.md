@@ -10,13 +10,14 @@ Foundation only: repo scaffold, database schema, magic-link auth wiring, and the
 
 - Next.js (App Router) + TypeScript + Prisma 7 project scaffold. Prisma 7's driver-adapter requirement meant the database connection URL lives in `prisma.config.ts`, not `schema.prisma` — a Prisma-version detail worth knowing before touching either file.
 - Prisma schema: `User`, `SavedComparison`, `SavedComparisonFund` (product data) plus `Account`, `Session`, `VerificationToken` (Auth.js adapter requirement, not product data — documented inline in `schema.prisma`).
-- Auth.js (`next-auth` v5 beta) wired with the Nodemailer magic-link provider and the Prisma adapter, JWT session strategy. The API route (`/api/auth/[...nextauth]`) and provider config (`lib/auth.ts`) are real; the sign-in *page* is a placeholder — building the actual sign-in form was explicitly deferred to Week 5 per the roadmap.
+- Auth.js (`next-auth` v5 beta) wired with the Nodemailer magic-link provider and the Prisma adapter, JWT session strategy. The API route (`/api/auth/[...nextauth]`) and provider config (`lib/auth.ts`) are real; the sign-in _page_ is a placeholder — building the actual sign-in form was explicitly deferred to Week 5 per the roadmap.
 - Base design-system components: `Button`, `Card`, `Input`, `Badge` (`components/ui/`), built to `docs/InvestorHub-design-system.md`'s token/spec.
 - `lib/cn.ts` — small classname-merge helper (added during the audit fix round, see below).
 
 ## Audit history
 
 **First audit — NOT APPROVED.** Findings:
+
 - `Session` model had no primary key, only a unique index on `sessionToken` — not a real PK.
 - No index on the foreign-key columns (`userId`) on `SavedComparison`, `Account`, `Session` — every "this user's X" query would have been a sequential scan.
 - Base UI components (Button/Card/Input/Badge) were missing entirely at the time of the first audit pass.
