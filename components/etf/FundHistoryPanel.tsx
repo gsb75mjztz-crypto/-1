@@ -20,7 +20,7 @@ export function FundHistoryPanel({
   return (
     <div className={styles.wrapper}>
       <section>
-        <h3>Data provenance log</h3>
+        <h2>Data provenance log</h2>
         <ul className={styles.log}>
           {provenance.map((entry) => (
             <li
@@ -35,7 +35,7 @@ export function FundHistoryPanel({
       </section>
 
       <section className={styles.emptyState}>
-        <h3>Not enough history yet for this fund</h3>
+        <h2>Not enough history yet for this fund</h2>
         <p className="text-secondary">
           We started tracking this fund on {formatDate(trackingStartIso)} —
           check back as more data accumulates.

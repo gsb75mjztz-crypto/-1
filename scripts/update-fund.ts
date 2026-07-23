@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
-import { parseFund } from "@/lib/fundSchema";
+import { parseFund, tickerPattern } from "@/lib/fundSchema";
 
 // Per docs/InvestorHub-data-strategy.md Section 4:
 //   scripts/update-fund.ts --ticker VWRP --field ocf --value 0.22 \
@@ -56,6 +56,16 @@ function main() {
   if (!UPDATABLE_FIELDS.has(field)) {
     console.error(
       `Field "${field}" is not updatable via this script. Updatable fields: ${Array.from(UPDATABLE_FIELDS).join(", ")}. Holdings/allocation changes need a full factsheet re-import, not a single-field update.`,
+    );
+    process.exit(1);
+  }
+
+  // Validate before using the ticker to build a filesystem path — an
+  // unchecked value here could otherwise be used to traverse outside
+  // data/funds (e.g. "--ticker ../../etc/passwd").
+  if (!tickerPattern.test(ticker.toUpperCase())) {
+    console.error(
+      `"${ticker}" is not a valid ticker (expected 2-8 uppercase letters/digits, e.g. VWRP).`,
     );
     process.exit(1);
   }

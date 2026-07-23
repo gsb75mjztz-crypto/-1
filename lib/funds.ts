@@ -16,7 +16,14 @@ function loadAllFunds(): FundData[] {
 
   const files = readdirSync(FUNDS_DIR).filter((f) => f.endsWith(".json"));
   cache = files.map((file) => {
-    const raw = JSON.parse(readFileSync(join(FUNDS_DIR, file), "utf-8"));
+    const text = readFileSync(join(FUNDS_DIR, file), "utf-8");
+    let raw: unknown;
+    try {
+      raw = JSON.parse(text);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      throw new Error(`Malformed JSON in data/funds/${file}: ${message}`);
+    }
     return parseFund(raw, `data/funds/${file}`);
   });
   return cache;

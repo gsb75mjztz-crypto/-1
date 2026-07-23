@@ -72,6 +72,7 @@ Non-negotiable gate, restated from the engineering roadmap's Week 0 dependency �
 - [ ] Terms of Use and Privacy Policy reviewed for accuracy and completeness against actual data practices and UK GDPR requirements.
 - [ ] The FMP (or equivalent) data licence reviewed to confirm in writing it covers commercial end-user display.
 - [ ] Founder-led content guidelines (Section 6 above) reviewed against current FCA finfluencer guidance, which has been an active enforcement area and may have moved since this document was written — check for current guidance, don't rely solely on this document's snapshot of it.
+- [ ] Whether citing factual holdings data (top holdings, sector/region allocation) extracted from a fund factsheet marked "for professional investors only" is appropriate on a retail-facing page, given the source document's own distribution restriction — currently in use for VWRP and VUAG holdings (not fees, which cites the retail KIID instead) because no retail-tier document with that data granularity was found. See Data Strategy Section 8 for the full detail.
 
 ## 9. Engineering Enforcement Checklist
 

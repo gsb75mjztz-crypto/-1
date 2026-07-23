@@ -51,6 +51,18 @@ Validates the result against `lib/fundSchema.ts` and appends to the fund's
 `history` array before writing — see `docs/InvestorHub-data-strategy.md`
 Section 4.
 
+### Known upcoming data changes
+
+- **VWRP OCF: 0.19% → 0.14%, effective 2026-07-28.** Per Vanguard's
+  shareholder notice dated 2026-07-21, not yet reflected in
+  `data/funds/VWRP.json` — the current OCF is correct as of today, and
+  changing it before the effective date would misstate the fund's current
+  fees. On or after 2026-07-28, run:
+  ```bash
+  npm run update-fund -- --ticker VWRP --field ocf --value 0.14 \
+    --source "Vanguard shareholder notice, 2026-07-21" --date 2026-07-28
+  ```
+
 ## Project structure
 
 ```

@@ -37,6 +37,6 @@
   border-radius: var(--radius-card);
 }
 
-.emptyState h3 {
+.emptyState h2 {
   margin-bottom: var(--space-2);
 }

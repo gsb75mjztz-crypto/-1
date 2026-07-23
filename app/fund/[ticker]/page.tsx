@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
 import { Container } from "@/components/layout/Container";
 import { SourceAttribution } from "@/components/etf/SourceAttribution";
 import { AllocationTable } from "@/components/etf/AllocationTable";
@@ -31,12 +32,40 @@ export function generateStaticParams() {
   }));
 }
 
+// Lowercase is the canonical URL casing (matches generateStaticParams).
+// Fund tickers are case-insensitive lookups by design (getFundByTicker),
+// so /fund/VWRP and /fund/VwRp must not become separate, independently
+// cached pages with duplicate content — they redirect to the one
+// canonical URL instead.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ ticker: string }>;
+}): Promise<Metadata> {
+  const { ticker } = await params;
+  const fund = getFundByTicker(ticker);
+
+  if (!fund) {
+    return {};
+  }
+
+  return {
+    title: `${fund.name} (${fund.ticker}) | InvestorHub`,
+    description: `Fees, holdings and performance for ${fund.name} (${fund.ticker}, ${fund.isin}) — sourced from official issuer documentation, with confidence badges showing how fresh the data is.`,
+  };
+}
+
 export default async function FundPage({
   params,
 }: {
   params: Promise<{ ticker: string }>;
 }) {
   const { ticker } = await params;
+
+  if (ticker !== ticker.toLowerCase()) {
+    redirect(`/fund/${ticker.toLowerCase()}`);
+  }
+
   const fund = getFundByTicker(ticker);
 
   if (!fund) {
@@ -47,12 +76,14 @@ export default async function FundPage({
     where: { ticker: fund.ticker },
   });
 
+  const marketDataUpdatedIso = performance
+    ? performance.marketDataUpdatedAt.toISOString().slice(0, 10)
+    : null;
+
   const feesStatus = feesHoldingsConfidence(fund.feesPublished);
   const holdingsStatus = feesHoldingsConfidence(fund.holdingsPublished);
-  const performanceStatus = performance
-    ? performanceConfidence(
-        performance.marketDataUpdatedAt.toISOString().slice(0, 10),
-      )
+  const performanceStatus = marketDataUpdatedIso
+    ? performanceConfidence(marketDataUpdatedIso)
     : "low";
 
   const overview = (
@@ -128,7 +159,7 @@ export default async function FundPage({
             What does this mean? →
           </a>
         </div>
-        {performance ? (
+        {performance && marketDataUpdatedIso ? (
           <>
             <PerformanceGrid
               oneMonth={
@@ -153,9 +184,7 @@ export default async function FundPage({
             <SourceAttribution
               source={performance.source}
               dateLabel="Market data last updated"
-              dateIso={performance.marketDataUpdatedAt
-                .toISOString()
-                .slice(0, 10)}
+              dateIso={marketDataUpdatedIso}
               status={performanceStatus}
             />
           </>
@@ -168,13 +197,10 @@ export default async function FundPage({
     </div>
   );
 
-  const provenance = performance
-    ? buildProvenanceLog(
-        fund,
-        performance.source,
-        performance.marketDataUpdatedAt.toISOString().slice(0, 10),
-      )
-    : [];
+  const provenance =
+    performance && marketDataUpdatedIso
+      ? buildProvenanceLog(fund, performance.source, marketDataUpdatedIso)
+      : [];
 
   return (
     <Container>
