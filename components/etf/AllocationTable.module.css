@@ -1,0 +1,36 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.caption {
+  text-align: left;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+  padding-bottom: var(--space-2);
+}
+
+.row td {
+  padding: var(--space-2) 0;
+  border-bottom: 0.5px solid var(--color-border);
+  min-height: var(--tap-target-min);
+  font-size: var(--text-body);
+  color: var(--color-text-secondary);
+}
+
+.row:last-child td {
+  border-bottom: none;
+}
+
+.weight {
+  text-align: right;
+  color: var(--color-text-primary);
+  font-weight: var(--weight-medium);
+}
+
+.partialNote {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-caption);
+  color: var(--color-text-muted);
+}

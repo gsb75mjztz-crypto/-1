@@ -1,0 +1,87 @@
+{
+  "ticker": "VWRP",
+  "isin": "IE00BK5BQT80",
+  "name": "Vanguard FTSE All-World UCITS ETF",
+  "issuer": "Vanguard",
+  "ocf": 0.19,
+  "feesSource": "Vanguard Official Factsheet",
+  "feesPublished": "2026-06-30",
+  "holdingsSource": "Vanguard Official Factsheet",
+  "holdingsPublished": "2026-06-30",
+  "topHoldings": [
+    {
+      "name": "NVIDIA Corp",
+      "weight": 4.5
+    },
+    {
+      "name": "Apple Inc",
+      "weight": 4
+    },
+    {
+      "name": "Alphabet Inc",
+      "weight": 3.6
+    },
+    {
+      "name": "Microsoft Corp",
+      "weight": 2.7
+    },
+    {
+      "name": "Amazon.com Inc",
+      "weight": 2.2
+    },
+    {
+      "name": "Taiwan Semiconductor Manufacturing Co. Ltd.",
+      "weight": 1.8
+    },
+    {
+      "name": "Broadcom Inc",
+      "weight": 1.7
+    },
+    {
+      "name": "Micron Technology Inc",
+      "weight": 1.2
+    },
+    {
+      "name": "Meta Platforms Inc",
+      "weight": 1.2
+    },
+    {
+      "name": "Tesla Inc",
+      "weight": 1.2
+    }
+  ],
+  "sectorAllocation": {
+    "Technology": 35.1,
+    "Financials": 14.8,
+    "Industrials": 12.6,
+    "Consumer Discretionary": 11,
+    "Health Care": 7.8,
+    "Consumer Staples": 3.9,
+    "Energy": 3.7,
+    "Telecommunications": 3.5,
+    "Basic Materials": 3.1,
+    "Utilities": 2.7,
+    "Real Estate": 1.8
+  },
+  "regionAllocation": {
+    "United States": 61.7,
+    "Japan": 5.9,
+    "Taiwan": 3.4,
+    "United Kingdom": 3.2,
+    "Canada": 2.9,
+    "Korea": 2.9,
+    "China": 2.6,
+    "Switzerland": 2,
+    "France": 2,
+    "Germany": 1.8
+  },
+  "lastReviewed": "2026-07-23",
+  "history": [
+    {
+      "date": "2026-06-30",
+      "field": "ocf",
+      "value": 0.19,
+      "source": "Vanguard Official Factsheet"
+    }
+  ]
+}

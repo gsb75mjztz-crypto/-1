@@ -46,18 +46,22 @@ export default function MethodologyPage() {
 
         <section>
           <h2>What each metric means</h2>
+          {/* Per this doc's own note: "each term should link out from
+              wherever it appears on a fund page, not just live on this
+              page." The ids below are what app/fund/[ticker]/page.tsx
+              links its metric labels to. */}
           <ul>
-            <li>
+            <li id="ocf">
               <strong>Ongoing Charge (OCF)</strong>: the fund&apos;s annual
               running cost as a percentage of your investment, charged by the
               fund provider — not a trading fee or platform charge.
             </li>
-            <li>
+            <li id="holdings">
               <strong>Holdings breakdown</strong>: the fund&apos;s underlying
               investments by weight, as reported in the issuer&apos;s most
               recent holdings disclosure.
             </li>
-            <li>
+            <li id="performance">
               <strong>
                 Performance (1M / YTD / 1Y / 3Y / 5Y / Since Launch)
               </strong>

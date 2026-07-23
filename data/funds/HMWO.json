@@ -1,0 +1,60 @@
+{
+  "ticker": "HMWO",
+  "isin": "IE00B4X9L533",
+  "name": "HSBC MSCI World UCITS ETF",
+  "issuer": "HSBC",
+  "ocf": 0.15,
+  "feesSource": "HSBC Official Factsheet",
+  "feesPublished": "2026-06-30",
+  "holdingsSource": "HSBC Official Factsheet",
+  "holdingsPublished": "2026-06-30",
+  "topHoldings": [
+    { "name": "NVIDIA Corp", "weight": 5.17 },
+    { "name": "Apple Inc", "weight": 4.75 },
+    { "name": "Alphabet Inc", "weight": 4.16 },
+    { "name": "Microsoft Corp", "weight": 2.94 },
+    { "name": "Amazon.com Inc", "weight": 2.58 },
+    { "name": "Broadcom Inc", "weight": 1.9 },
+    { "name": "Micron Technology Inc", "weight": 1.45 },
+    { "name": "Meta Platforms Inc", "weight": 1.38 },
+    { "name": "Tesla Inc", "weight": 1.32 },
+    { "name": "Eli Lilly & Co", "weight": 1.08 }
+  ],
+  "sectorAllocation": {
+    "Information Technology": 30.22,
+    "Financials": 15.81,
+    "Industrials": 11.6,
+    "Health Care": 9.07,
+    "Consumer Discretionary": 8.89,
+    "Communication Services": 8.04,
+    "Consumer Staples": 5.01,
+    "Energy": 3.58,
+    "Materials": 3.29,
+    "Utilities": 2.56,
+    "Real Estate": 1.67,
+    "Cash & Others": 0.26
+  },
+  "regionAllocation": {
+    "United States": 72.52,
+    "Japan": 5.67,
+    "United Kingdom": 3.5,
+    "Canada": 3.32,
+    "France": 2.3,
+    "Germany": 2.1,
+    "Switzerland": 2.01,
+    "Netherlands": 1.62,
+    "Australia": 1.52,
+    "Spain": 0.96,
+    "Other Locations": 4.22,
+    "Cash & Others": 0.26
+  },
+  "lastReviewed": "2026-07-23",
+  "history": [
+    {
+      "date": "2026-06-30",
+      "field": "ocf",
+      "value": 0.15,
+      "source": "HSBC Official Factsheet"
+    }
+  ]
+}
