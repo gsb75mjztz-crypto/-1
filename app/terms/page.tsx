@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { DraftNotice } from "@/components/ui/DraftNotice";
 
@@ -7,6 +8,16 @@ import { DraftNotice } from "@/components/ui/DraftNotice";
 // solicitor sign-off, which hasn't happened. See DraftNotice.tsx for why
 // this ships as a visible draft rather than either a placeholder or a
 // silent "final" page.
+//
+// noindex (Milestone 6): a search engine treating draft, unconfirmed
+// legal terms as the real, current Terms of Use is exactly the kind of
+// risk this page's own visible draft banner exists to prevent for human
+// readers — the same caution extends to crawlers. Remove once solicitor
+// sign-off lands and this page ships as final content.
+export const metadata: Metadata = {
+  title: "Terms of Use",
+  robots: { index: false, follow: true },
+};
 export default function TermsPage() {
   return (
     <Container>

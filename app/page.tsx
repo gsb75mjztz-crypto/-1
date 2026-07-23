@@ -1,8 +1,17 @@
+import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { NewsletterSignup } from "@/components/marketing/NewsletterSignup";
 import styles from "./page.module.css";
+
+// Title/description correctly inherit the root layout's defaults (this
+// *is* the site default). Only `alternates.canonical` needs setting here
+// — Next.js doesn't infer a page's own canonical path for you, and
+// `metadataBase` alone renders nothing without this.
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 // Homepage / landing page, per Product Brief Sections 1-2, PRD Section 2
 // (page #1) and User Flows Stage 1: one-sentence value proposition, a

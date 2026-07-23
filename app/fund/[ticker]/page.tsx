@@ -15,6 +15,7 @@ import {
 } from "@/lib/confidence";
 import { buildProvenanceLog } from "@/lib/provenance";
 import { prisma } from "@/lib/prisma";
+import { SITE_URL } from "@/lib/siteUrl";
 import styles from "./page.module.css";
 
 // ETF detail page — Milestone 3. Renders the exact template from
@@ -51,8 +52,14 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${fund.name} (${fund.ticker}) | InvestorHub`,
+    // Not "... | InvestorHub" — the root layout's title.template (added
+    // Milestone 6) appends that automatically. This page's own literal
+    // suffix predates the template and, left in place, rendered as
+    // "... | InvestorHub | InvestorHub" — caught while auditing this
+    // milestone's SEO work, not before.
+    title: `${fund.name} (${fund.ticker})`,
     description: `Fees, holdings and performance for ${fund.name} (${fund.ticker}, ${fund.isin}) — sourced from official issuer documentation, with confidence badges showing how fresh the data is.`,
+    alternates: { canonical: `/fund/${fund.ticker.toLowerCase()}` },
   };
 }
 
@@ -214,8 +221,30 @@ export default async function FundPage({
       ? buildProvenanceLog(fund, performance.source, marketDataUpdatedIso)
       : [];
 
+  // Purely navigational structured data (Home -> this fund) — factual,
+  // zero risk of reading as a rating or recommendation, unlike e.g.
+  // Product/Offer/AggregateRating schema, which this product never emits
+  // anywhere (see app/layout.tsx).
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: fund.name,
+        item: `${SITE_URL}/fund/${fund.ticker.toLowerCase()}`,
+      },
+    ],
+  };
+
   return (
     <Container>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
+      />
       <header className={styles.header}>
         <h1>{fund.name}</h1>
         <p className="text-secondary">

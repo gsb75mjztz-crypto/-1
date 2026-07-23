@@ -76,6 +76,24 @@
   display: none;
 }
 
+/* Real state change (menu closed -> open) — a CSS animation, not a
+   transition, because this element toggles via `hidden` (display:none),
+   and only `animation` reliably plays across a display-none boundary. */
+.mobileNav:not([hidden]) {
+  animation: mobile-nav-in 150ms ease;
+}
+
+@keyframes mobile-nav-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .mobileNav a {
   color: var(--color-text-primary);
   text-decoration: none;

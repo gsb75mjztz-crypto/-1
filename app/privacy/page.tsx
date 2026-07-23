@@ -1,9 +1,17 @@
+import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { DraftNotice } from "@/components/ui/DraftNotice";
 
 // DRAFT content — grounded directly in the actual schema (prisma/schema.prisma)
 // and Legal Principles Section 4, not generic boilerplate, but explicitly
 // not final. See DraftNotice.tsx and app/terms/page.tsx for why.
+//
+// noindex (Milestone 6): same reasoning as app/terms/page.tsx — draft,
+// unconfirmed privacy terms shouldn't be indexed as the real policy.
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  robots: { index: false, follow: true },
+};
 export default function PrivacyPage() {
   return (
     <Container>

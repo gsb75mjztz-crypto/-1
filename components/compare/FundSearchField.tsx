@@ -14,6 +14,7 @@ export interface SearchableFund {
   ticker: string;
   name: string;
   isin: string;
+  ocf: number;
 }
 
 // Fund search/typeahead for the Comparison Tool — Technical Architecture
@@ -35,6 +36,7 @@ export function FundSearchField({
   onSelect,
   onClear,
   autoFocus = false,
+  emptyMessage = "We don't cover this fund yet",
 }: {
   label: string;
   funds: SearchableFund[];
@@ -51,6 +53,12 @@ export function FundSearchField({
   // set for fields 1/2, which are present from page load and shouldn't
   // grab focus away from wherever the user already is.
   autoFocus?: boolean;
+  // Overridden by the parent when a fee filter is active and has trimmed
+  // `funds` down — "we don't cover this fund yet" is the right message
+  // for a genuine catalogue gap, but wrong (misleadingly implies the
+  // catalogue lacks the fund) when a result is simply filtered out by the
+  // fee cap the user set themselves.
+  emptyMessage?: string;
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -61,7 +69,7 @@ export function FundSearchField({
   const fuse = useMemo(
     () =>
       new Fuse(funds, {
-        keys: ["name", "ticker"],
+        keys: ["name", "ticker", "isin"],
         threshold: 0.3,
       }),
     [funds],
@@ -187,7 +195,7 @@ export function FundSearchField({
         >
           {results.length === 0 ? (
             <li className={styles.noResults} role="presentation">
-              We don&apos;t cover this fund yet
+              {emptyMessage}
             </li>
           ) : (
             results.map((fund, index) => (

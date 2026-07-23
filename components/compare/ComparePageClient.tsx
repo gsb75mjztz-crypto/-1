@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import {
   FundSearchField,
   type SearchableFund,
@@ -24,8 +25,8 @@ type CompareState =
 // renders the results. Empty-state copy is LOCKED verbatim, Design System
 // Section 10.
 //
-// `funds` here is the slim search index only (ticker/name/isin) — full
-// comparison data for the selected funds is fetched on demand via
+// `funds` here is the slim search index only (ticker/name/isin/ocf) —
+// full comparison data for the selected funds is fetched on demand via
 // getComparableFunds() when Compare is clicked, not held for every
 // curated fund up front. See app/compare/page.tsx and actions.ts.
 export function ComparePageClient({ funds }: { funds: SearchableFund[] }) {
@@ -36,9 +37,24 @@ export function ComparePageClient({ funds }: { funds: SearchableFund[] }) {
   const [compareState, setCompareState] = useState<CompareState>({
     status: "idle",
   });
+  // Fee-cap filter, Milestone 6 — narrows the fund picker's own result
+  // list only, not a separate browse/screener surface (the PRD explicitly
+  // cuts a standalone ETF database page from MVP scope; this stays inside
+  // the existing Comparison Tool search). A fund already selected in a
+  // slot stays selected even if a filter set afterwards would exclude it
+  // — the filter narrows what you can pick next, it never un-picks
+  // something you already chose.
+  const [maxFeeInput, setMaxFeeInput] = useState("");
 
   const selected = slots.filter((f): f is SearchableFund => f !== null);
   const canCompare = selected.length >= 2;
+
+  const maxFee = Number(maxFeeInput);
+  const feeFilterActive = maxFeeInput.trim() !== "" && Number.isFinite(maxFee);
+  const filteredFunds = useMemo(
+    () => (feeFilterActive ? funds.filter((f) => f.ocf <= maxFee) : funds),
+    [funds, feeFilterActive, maxFee],
+  );
 
   function setSlot(index: 0 | 1 | 2, fund: SearchableFund | null) {
     setSlots((prev) => {
@@ -85,31 +101,54 @@ export function ComparePageClient({ funds }: { funds: SearchableFund[] }) {
         </div>
       )}
 
+      <Input
+        label="Max fee (OCF %) — optional"
+        type="number"
+        inputMode="decimal"
+        step={0.01}
+        min={0}
+        placeholder="No limit"
+        value={maxFeeInput}
+        onChange={(e) => setMaxFeeInput(e.target.value)}
+        className={styles.feeFilter}
+      />
+
       <div className={styles.fields}>
         <FundSearchField
           label="Fund 1"
-          funds={funds}
+          funds={filteredFunds}
           excludeTickers={excludeFor(0)}
           selected={slots[0]}
           onSelect={(f) => setSlot(0, f)}
           onClear={() => setSlot(0, null)}
+          emptyMessage={
+            feeFilterActive ? "No funds at or under this fee limit" : undefined
+          }
         />
         <FundSearchField
           label="Fund 2"
-          funds={funds}
+          funds={filteredFunds}
           excludeTickers={excludeFor(1)}
           selected={slots[1]}
           onSelect={(f) => setSlot(1, f)}
           onClear={() => setSlot(1, null)}
+          emptyMessage={
+            feeFilterActive ? "No funds at or under this fee limit" : undefined
+          }
         />
         {(showThirdSlot || slots[2]) && (
           <FundSearchField
             label="Fund 3 (optional)"
-            funds={funds}
+            funds={filteredFunds}
             excludeTickers={excludeFor(2)}
             selected={slots[2]}
             onSelect={(f) => setSlot(2, f)}
             onClear={() => setSlot(2, null)}
+            emptyMessage={
+              feeFilterActive
+                ? "No funds at or under this fee limit"
+                : undefined
+            }
             // This field only ever mounts once, the moment it's first
             // revealed (via the button below) — autoFocus is a native
             // HTML behavior that fires exactly once at that point, not on

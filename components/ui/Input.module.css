@@ -19,6 +19,8 @@
   font-family: var(--font-ui);
   font-size: var(--text-body);
   color: var(--color-text-primary);
+  /* Smooths the focus ring's arrival, same reasoning as Button.module.css. */
+  transition: border-color 150ms ease;
 }
 
 /* Focus ring, not a border-colour-only change (Design System Section 4.3 /

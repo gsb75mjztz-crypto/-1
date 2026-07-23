@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
+
+export const metadata: Metadata = {
+  title: "Disclaimer",
+  description:
+    "InvestorHub provides factual information only — not financial advice or a recommendation to buy, sell or hold any investment.",
+  alternates: { canonical: "/disclaimer" },
+};
 
 // New route beyond the PRD's literal 13-page sitemap — the PRD (page #9)
 // says the disclaimer language belongs inside Terms of Use, and it does

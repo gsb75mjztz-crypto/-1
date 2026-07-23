@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
+
+export const metadata: Metadata = {
+  title: "Methodology",
+  description:
+    "Where our fund data comes from, how often it's updated, how each metric and calculation is defined, and what the current limitations are.",
+  alternates: { canonical: "/methodology" },
+};
 
 // Content copied from docs/InvestorHub-etf-page-build-spec.md Section 4,
 // verbatim. This page is real content, not a placeholder — unlike Terms

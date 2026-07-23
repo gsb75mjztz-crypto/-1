@@ -10,6 +10,11 @@
   margin-bottom: var(--space-2);
 }
 
+.feeFilter {
+  max-width: 240px;
+  margin-bottom: var(--space-4);
+}
+
 .fields {
   display: flex;
   flex-direction: column;
@@ -29,4 +34,16 @@
   color: var(--color-negative);
   font-size: var(--text-caption);
   margin-top: var(--space-2);
+  /* Real state change (an error just occurred) — a brief fade, not
+     decoration. */
+  animation: error-in 150ms ease;
+}
+
+@keyframes error-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
