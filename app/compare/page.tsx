@@ -1,57 +1,29 @@
 import { getAllFunds } from "@/lib/funds";
-import { prisma } from "@/lib/prisma";
-import {
-  ComparePageClient,
-  type ComparableFund,
-} from "@/components/compare/ComparePageClient";
+import { ComparePageClient } from "@/components/compare/ComparePageClient";
+import type { SearchableFund } from "@/components/compare/FundSearchField";
 
-// Comparison Tool — Milestone 4. Per Technical Architecture Section 9, the
-// fund list this page searches is already static build-time data, so it's
-// fetched once here (server component) and handed to the client for
-// Fuse.js search — no /api/funds round trip. Revalidates on the same
-// cadence as the fund detail pages (Technical Architecture Section 8).
+// Comparison Tool — Milestone 4, revised. Per Technical Architecture
+// Section 9, the fund list this page searches is already static
+// build-time data, so it's fetched once here (server component) and
+// handed to the client for Fuse.js search — no /api/funds round trip.
+// Revalidates on the same cadence as the fund detail pages (Technical
+// Architecture Section 8).
+//
+// Only the slim search fields (ticker/name/isin) are sent to the client
+// from this page. Full comparison data (holdings, allocations,
+// performance) is fetched on demand for just the selected funds via
+// app/compare/actions.ts when "Compare" is clicked — see that file for
+// why. Shipping every curated fund's full dataset unconditionally on
+// every page load was fine at 3 funds and would not have stayed fine at
+// the 30-50 funds the PRD specifies.
 export const revalidate = 86400;
 
-export default async function ComparePage() {
-  const funds = getAllFunds();
-  const performanceRows = await prisma.fundPerformance.findMany();
-  const performanceByTicker = new Map(
-    performanceRows.map((row) => [row.ticker, row]),
-  );
+export default function ComparePage() {
+  const searchableFunds: SearchableFund[] = getAllFunds().map((fund) => ({
+    ticker: fund.ticker,
+    name: fund.name,
+    isin: fund.isin,
+  }));
 
-  const comparableFunds: ComparableFund[] = funds.map((fund) => {
-    const performance = performanceByTicker.get(fund.ticker);
-    return {
-      ticker: fund.ticker,
-      name: fund.name,
-      isin: fund.isin,
-      ocf: fund.ocf,
-      feesSource: fund.feesSource,
-      feesPublished: fund.feesPublished,
-      holdingsSource: fund.holdingsSource,
-      holdingsPublished: fund.holdingsPublished,
-      topHoldings: fund.topHoldings,
-      sectorAllocation: fund.sectorAllocation,
-      regionAllocation: fund.regionAllocation,
-      performance: performance
-        ? {
-            return1y: performance.return1y
-              ? Number(performance.return1y)
-              : null,
-            return3y: performance.return3y
-              ? Number(performance.return3y)
-              : null,
-            return5y: performance.return5y
-              ? Number(performance.return5y)
-              : null,
-            source: performance.source,
-            marketDataUpdatedIso: performance.marketDataUpdatedAt
-              .toISOString()
-              .slice(0, 10),
-          }
-        : null,
-    };
-  });
-
-  return <ComparePageClient funds={comparableFunds} />;
+  return <ComparePageClient funds={searchableFunds} />;
 }

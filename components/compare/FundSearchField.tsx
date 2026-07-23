@@ -3,6 +3,11 @@
 import { useId, useMemo, useState } from "react";
 import Fuse from "fuse.js";
 import { Input } from "@/components/ui/Input";
+import {
+  reduceComboboxKey,
+  displayIndex as toDisplayIndex,
+  type ComboboxKey,
+} from "@/lib/comboboxNav";
 import styles from "./FundSearchField.module.css";
 
 export interface SearchableFund {
@@ -78,36 +83,41 @@ export function FundSearchField({
     setActiveIndex(-1);
   }
 
+  // Delegates the actual state-transition logic to lib/comboboxNav.ts, a
+  // pure function with its own unit tests — the ArrowDown-skip bug found
+  // in the Milestone 4 audit lived here, with no regression coverage at
+  // the time. Keeping the transition logic in a pure function (rather
+  // than inline setState calls) is what makes it testable without a
+  // browser.
   function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      if (!open) {
-        setOpen(true);
-        setActiveIndex(0);
-        return;
-      }
-      // activeIndex is -1 whenever the top result is only *implicitly*
-      // highlighted (query just changed, no explicit navigation yet — see
-      // the onChange handler below). The first ArrowDown press should
-      // confirm that implicit highlight (move to index 0), not skip past
-      // it to index 1 — treating -1 as "one before index 0" here is what
-      // fixes that.
-      setActiveIndex((i) => Math.min(i + 1, results.length - 1));
-    } else if (event.key === "ArrowUp") {
-      event.preventDefault();
-      setActiveIndex((i) => Math.max(i - 1, 0));
-    } else if (event.key === "Enter") {
-      // -1 means "the top result, implicitly" (see onChange) — Enter
-      // without ever touching the arrow keys still confirms it.
-      const effectiveIndex = activeIndex === -1 ? 0 : activeIndex;
-      if (open && results[effectiveIndex]) {
-        event.preventDefault();
-        selectFund(results[effectiveIndex]);
-      }
-    } else if (event.key === "Escape") {
-      setOpen(false);
-      setActiveIndex(-1);
+    const key = event.key;
+    if (
+      key !== "ArrowDown" &&
+      key !== "ArrowUp" &&
+      key !== "Enter" &&
+      key !== "Escape"
+    ) {
+      return;
     }
+    if (key === "ArrowDown" || key === "ArrowUp") {
+      event.preventDefault();
+    }
+    const result = reduceComboboxKey(
+      { open, activeIndex },
+      key as ComboboxKey,
+      results.length,
+    );
+    const toSelect =
+      result.selectIndex !== undefined
+        ? results[result.selectIndex]
+        : undefined;
+    if (toSelect) {
+      event.preventDefault();
+      selectFund(toSelect);
+      return;
+    }
+    setOpen(result.open);
+    setActiveIndex(result.activeIndex);
   }
 
   if (selected) {
@@ -132,13 +142,9 @@ export function FundSearchField({
     );
   }
 
-  // -1 displays the same as 0 (the top result reads as highlighted even
-  // before the user has explicitly pressed an arrow key) — see the
-  // onChange/ArrowDown comments above for why the underlying state still
-  // distinguishes the two.
-  const displayIndex = activeIndex === -1 ? 0 : activeIndex;
-  const activeOptionId = results[displayIndex]
-    ? `${listboxId}-option-${results[displayIndex].ticker}`
+  const activeIndexForDisplay = toDisplayIndex(activeIndex);
+  const activeOptionId = results[activeIndexForDisplay]
+    ? `${listboxId}-option-${results[activeIndexForDisplay].ticker}`
     : undefined;
 
   return (
@@ -189,9 +195,11 @@ export function FundSearchField({
                 key={fund.ticker}
                 id={`${listboxId}-option-${fund.ticker}`}
                 role="option"
-                aria-selected={index === displayIndex}
+                aria-selected={index === activeIndexForDisplay}
                 className={
-                  index === displayIndex ? styles.optionActive : styles.option
+                  index === activeIndexForDisplay
+                    ? styles.optionActive
+                    : styles.option
                 }
                 onMouseDown={(e) => {
                   // onMouseDown (not onClick) fires before the input's

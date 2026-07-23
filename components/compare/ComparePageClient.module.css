@@ -24,3 +24,9 @@
 .compareButton {
   margin-top: var(--space-6);
 }
+
+.errorText {
+  color: var(--color-negative);
+  font-size: var(--text-caption);
+  margin-top: var(--space-2);
+}

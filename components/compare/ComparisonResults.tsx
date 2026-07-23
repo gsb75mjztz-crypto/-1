@@ -8,7 +8,7 @@ import {
   feesHoldingsConfidence,
   performanceConfidence,
 } from "@/lib/confidence";
-import type { ComparableFund } from "@/components/compare/ComparePageClient";
+import type { ComparableFund } from "@/lib/compareTypes";
 import styles from "./ComparisonResults.module.css";
 
 // Comparison results — PRD US-1 acceptance criteria: OCF, 1Y/3Y/5Y
