@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+// Launch-prep pass: dropped the "Development Roadmap Week 5" note — see
+// app/contact/page.tsx for the same reasoning. This one matters slightly
+// more: it's reached only by clicking a real, already-sent email link, so
+// a visitor here has just taken a real action and deserves a page that
+// doesn't read like an internal planning doc leaked into their inbox.
 export default function NewsletterConfirmPage() {
-  return (
-    <PagePlaceholder
-      title="Newsletter confirmation"
-      note="Double opt-in confirmation — Development Roadmap Week 5."
-    />
-  );
+  return <PagePlaceholder title="Confirm your subscription" />;
 }

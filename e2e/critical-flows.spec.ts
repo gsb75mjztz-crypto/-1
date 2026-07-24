@@ -107,3 +107,32 @@ test.describe("Calculator — critical flow", () => {
     await expect(summary).toBeVisible();
   });
 });
+
+// Launch-prep pass: the fund page's own "See fee impact over time" link
+// (app/fund/[ticker]/page.tsx) carries a single fund's real OCF into the
+// Calculator via the same query-param bridge as the Compare -> Calculator
+// flow above, but was previously only proven indirectly (through that
+// other entry point) rather than tested from the fund page itself.
+test.describe("Fund page -> Calculator — critical bridge", () => {
+  test("'See fee impact over time' carries this fund's real OCF into the Calculator", async ({
+    page,
+  }) => {
+    const vwrp = getFundByTicker("vwrp");
+    if (!vwrp) {
+      throw new Error("expected VWRP to exist in /data/funds");
+    }
+
+    await page.goto("/fund/vwrp", { waitUntil: "load" });
+
+    const bridge = page.getByRole("link", {
+      name: /See fee impact over time/i,
+    });
+    await expect(bridge).toBeVisible();
+    await bridge.click();
+
+    await page.waitForURL(/\/calculator\?feeA=/);
+
+    const feeAInput = page.locator('input[type="number"]').nth(4);
+    await expect(feeAInput).toHaveValue(String(vwrp.ocf));
+  });
+});

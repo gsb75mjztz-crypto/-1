@@ -3,7 +3,13 @@ import { parseCalculatorParams } from "@/lib/calculatorDefaults";
 import { CalculatorPageClient } from "@/components/calculator/CalculatorPageClient";
 
 export const metadata: Metadata = {
-  title: "Growth & Fee-Drag Calculator",
+  // "Calculator" is the Design System's locked label (Section 9) — "Fee
+  // Calculator" and "Growth Calculator" are both explicitly on its "never
+  // use" list. The in-app heading already says "Calculator" alone
+  // (CalculatorPageClient.tsx); this metadata title previously combined
+  // both forbidden synonyms, which a search result or browser tab would
+  // then show inconsistently with the page itself.
+  title: "Calculator — what fee differences really cost",
   description:
     "See what a fee difference actually costs over time. Model compound growth, contributions and fee drag on your own numbers.",
   // Canonicalises to the bare path, not whichever ?feeA=&feeB=... share

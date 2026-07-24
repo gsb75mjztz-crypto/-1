@@ -14,6 +14,16 @@ import { DraftNotice } from "@/components/ui/DraftNotice";
 // risk this page's own visible draft banner exists to prevent for human
 // readers — the same caution extends to crawlers. Remove once solicitor
 // sign-off lands and this page ships as final content.
+//
+// Post-M8 launch-prep pass: added the sections Section 8's solicitor
+// checklist will otherwise flag as structurally missing (operator
+// identity, an explicit FCA-authorisation statement, an IP-ownership
+// clause) plus a standard UK consumer-law liability carve-out, so the
+// review pass is spent on legal judgment calls, not on filling gaps that
+// don't need a solicitor to notice. Operator legal identity is left as an
+// open placeholder, same reasoning as app/privacy/page.tsx — no entity has
+// been formed/named anywhere in this codebase, and inventing one here
+// would be a worse accuracy problem than an honest gap.
 export const metadata: Metadata = {
   title: "Terms of Use",
   robots: { index: false, follow: true },
@@ -31,6 +41,17 @@ export default function TermsPage() {
         </DraftNotice>
 
         <section>
+          <h2>Who operates InvestorHub</h2>
+          <p>
+            <em>
+              Operator legal name, registered address, and company number: to be
+              added here once the operating entity is formed. This is a required
+              field for the final terms, not an oversight in this draft.
+            </em>
+          </p>
+        </section>
+
+        <section>
           <h2>What InvestorHub is</h2>
           <p>
             InvestorHub is a research tool that shows factual information about
@@ -45,6 +66,12 @@ export default function TermsPage() {
               hold any investment.
             </strong>{" "}
             See our full <a href="/disclaimer">Disclaimer</a>.
+          </p>
+          <p>
+            InvestorHub is not authorised or regulated by the Financial Conduct
+            Authority (FCA), does not hold itself out as such, and does not
+            provide regulated financial advice or personal recommendations of
+            any kind.
           </p>
         </section>
 
@@ -84,7 +111,24 @@ export default function TermsPage() {
           <p>
             Any decision you make using information from this site is your own.
             InvestorHub is not liable for investment losses arising from use of
-            the site, to the fullest extent permitted by law.
+            the site, to the fullest extent permitted by law. Nothing in these
+            terms excludes or limits liability where it would be unlawful to do
+            so — including for death or personal injury caused by negligence, or
+            for fraud — or affects your statutory rights as a consumer.
+          </p>
+        </section>
+
+        <section>
+          <h2>Intellectual property</h2>
+          <p>
+            The compiled fund comparisons, calculator, and site content are
+            InvestorHub&apos;s own work and may not be reproduced or
+            redistributed as your own compiled dataset (see Acceptable use,
+            below). The underlying factual data — fees, holdings, performance —
+            remains sourced from and attributed to the official issuer
+            disclosures cited on each page; InvestorHub doesn&apos;t claim
+            ownership of those underlying facts, only of how they&apos;re
+            compiled and presented here.
           </p>
         </section>
 

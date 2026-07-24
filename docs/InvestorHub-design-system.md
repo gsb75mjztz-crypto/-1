@@ -181,8 +181,10 @@ This is a non-optional template element (per PRD FR-10) — it must be part of t
 | Nav item → Saved Comparisons | **Saved** | "My Account," "Portfolio" |
 | Auth state (new/anon user) | **Sign up** | — |
 | Auth state (existing session) | **Sign in** | "Account" (ambiguous, doesn't state current state) |
-| Static data freshness | **Last verified** | "Checked by us," "Confirmed," "Reviewed" |
+| Static data freshness | **Data published** / **Market data last updated** | "Checked by us," "Confirmed," "Reviewed" |
 | Whole-page freshness | **Last reviewed** | "Checked by us" |
+
+**Launch-prep note (resolves a doc conflict, not a code change):** this row originally locked "Last verified" for static-data freshness. The ETF Page Build Spec — which explicitly supersedes earlier templates — instead specifies "Data published" (fees/holdings) and "Market data last updated" (performance) in its own concrete page template, and the shipped, public Methodology page tells users to expect exactly those labels. `components/etf/SourceAttribution.tsx` correctly implements the Build Spec's version, consistently, everywhere it appears. This row is updated to match what actually shipped and is already public, rather than leaving a stale label here that contradicts both the more specific spec and the live product. "Last reviewed" (whole-page freshness, `components/etf/DataQuality.tsx`) is unaffected and unchanged.
 
 ---
 

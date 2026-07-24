@@ -113,7 +113,7 @@ Standard labels, locked across nav, buttons, and page titles:
 - **"Calculator"** — consistent everywhere; do not alternate with "Fee Calculator" or "Growth Calculator" in different contexts, even though both are accurate — pick one and hold it.
 - **"Saved"** (nav, when signed in) → leads to **Saved Comparisons** — nav label stays short; full page title can be the longer form.
 - **"Sign in"** vs **"Sign up"** — shown contextually (sign up for new/anonymous users, sign in once a session exists) rather than a single ambiguous "Account" label that doesn't tell the user their current state.
-- **"Last verified" / "Last reviewed"** — per the earlier terminology fix, used identically on every fund page, never substituted with "checked," "confirmed," or other synonyms that would read as a different thing to a returning user comparing pages.
+- **"Data published" / "Market data last updated" / "Last reviewed"** — used identically on every fund page (per the ETF Page Build Spec's template, which superseded this doc's earlier "Last verified" wording — see Design System Section 9's launch-prep note), never substituted with "checked," "confirmed," or other synonyms that would read as a different thing to a returning user comparing pages.
 
 ---
 

@@ -73,7 +73,7 @@ Deliberately minimal — four items. No mega-menu, no dropdown of sections that 
 - Page renders the full template from the ETF Page Build Spec: Fees / Holdings / Performance sections, each with Source, Data published/updated date, and a Confidence badge.
 - Confidence badge colour follows the defined thresholds (Fees/Holdings: 🟢 ≤45 days, 🟡 45–90 days, 🔴 >90 days since verification; Performance: 🟢 ≤7 days, 🟡 7–30 days, 🔴 >30 days).
 - Tapping the `ⓘ` next to any badge shows the standard confidence-system explanation text, including the "not a rating of the fund" line, verbatim as specified in the Build Spec.
-- "Last verified" / "Last reviewed" terminology used consistently; "checked by us" phrasing does not appear anywhere in the shipped product.
+- "Data published" / "Market data last updated" / "Last reviewed" terminology used consistently (per the ETF Page Build Spec, which superseded this doc's earlier "Last verified" wording); "checked by us" phrasing does not appear anywhere in the shipped product.
 - Disclaimer line ("This page provides factual information only...") renders on every fund page without exception.
 - Overview/History tab toggle is present and functional (History tab content per US-3).
 

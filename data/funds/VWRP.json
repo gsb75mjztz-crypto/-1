@@ -4,8 +4,8 @@
   "name": "Vanguard FTSE All-World UCITS ETF",
   "issuer": "Vanguard",
   "ocf": 0.19,
-  "feesSource": "Vanguard KIID (Key Investor Information Document)",
-  "feesPublished": "2026-02-17",
+  "feesSource": "Vanguard shareholder notice, 2026-07-21",
+  "feesPublished": "2026-07-24",
   "holdingsSource": "Vanguard Fund Factsheet",
   "holdingsPublished": "2026-06-30",
   "topHoldings": [
@@ -75,13 +75,19 @@
     "France": 2,
     "Germany": 1.8
   },
-  "lastReviewed": "2026-07-23",
+  "lastReviewed": "2026-07-24",
   "history": [
     {
       "date": "2026-02-17",
       "field": "ocf",
       "value": 0.19,
       "source": "Vanguard KIID (Key Investor Information Document)"
+    },
+    {
+      "date": "2026-07-24",
+      "field": "ocf",
+      "value": 0.19,
+      "source": "Vanguard shareholder notice, 2026-07-21"
     }
   ]
 }

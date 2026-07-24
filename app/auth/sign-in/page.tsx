@@ -13,11 +13,10 @@ export const metadata: Metadata = {
   title: "Sign in",
   robots: { index: false, follow: true },
 };
+// Launch-prep pass: dropped the "Development Roadmap Week 5" note — see
+// app/contact/page.tsx for the same reasoning. This link sits in the
+// primary nav on every page, so it's one of the most likely stub pages a
+// real visitor reaches.
 export default function SignInPage() {
-  return (
-    <PagePlaceholder
-      title="Sign in"
-      note="Magic-link sign-in — Development Roadmap Week 5."
-    />
-  );
+  return <PagePlaceholder title="Sign in" />;
 }

@@ -10,11 +10,8 @@ export const metadata: Metadata = {
   title: "Saved",
   robots: { index: false, follow: true },
 };
+// Launch-prep pass: dropped the "Development Roadmap Week 5" note — see
+// app/contact/page.tsx for the same reasoning.
 export default function SavedPage() {
-  return (
-    <PagePlaceholder
-      title="Saved"
-      note="Saved comparisons — Development Roadmap Week 5."
-    />
-  );
+  return <PagePlaceholder title="Saved" />;
 }
