@@ -9,12 +9,23 @@ Each completed milestone's file covers: what shipped, the non-obvious decisions 
 | `Milestone-1.md`             | Complete — tagged `v1.0`                          |
 | `Milestone-2.md`             | Complete — tagged `v2.0`                          |
 | `Milestone-3.md`             | Complete — tagged `v3.0`                          |
-| `Milestone-4.md`             | Complete — approved, pending `v4.0` tag           |
+| `Milestone-4.md`             | Complete — tagged `v4.0`                          |
 | `End-of-Phase-Report.md`     | End-of-phase handover, written after Milestone 3  |
 | `technical-debt-register.md` | Living register of deliberately deferred findings |
+
+**Milestones 5-8 are complete and tagged (`v5.0`-`v8.0`) but don't have a
+narrative `Milestone-N.md` file** — an honest gap in this folder's own
+stated purpose, not a silent one. For what actually shipped in each, the
+audit trail is in the commit messages on each `milestone-N` branch and the
+completion-audit conversation history, not reconstructed here after the
+fact. If a genuine need for the narrative form shows up (a new engineer
+who needs the "why," not just the "what"), backfill from git history at
+that point rather than guessing retroactively now.
 
 See `docs/InvestorHub-project-health-review.md` for the full cross-milestone architecture/quality/compliance review — this folder is the narrative history, that document is the point-in-time audit.
 
 See `technical-debt-register.md` for findings that were knowingly deferred rather than fixed, with the engineering reasoning and the condition that would trigger revisiting each one.
 
-When Milestone 5 begins, add `Milestone-5.md` following the same kickoff-brief template rather than editing this README's table structurally.
+If a future milestone's kickoff brief is wanted, add `Milestone-N.md`
+following the original template rather than editing this README's table
+structurally.

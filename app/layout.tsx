@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Fraunces } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SITE_URL } from "@/lib/siteUrl";
@@ -96,6 +97,12 @@ export default function RootLayout({
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
+        {/* Milestone 8 — Vercel Web Analytics: aggregate page-view counts
+            only, cookie-less, no persistent per-visitor identifier, posts
+            to a same-origin path in production (see next.config.ts's CSP
+            comment). Consistent with Legal Principles Section 4's data
+            minimisation stance and disclosed in app/privacy/page.tsx. */}
+        <Analytics />
       </body>
     </html>
   );

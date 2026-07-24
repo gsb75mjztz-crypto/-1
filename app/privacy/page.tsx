@@ -87,6 +87,12 @@ export default function PrivacyPage() {
             We use a session cookie to keep you signed in if you have an
             account. We don&apos;t use advertising or tracking cookies.
           </p>
+          <p>
+            We use Vercel Web Analytics to see aggregate figures like how many
+            people visit a page — it doesn&apos;t use cookies, doesn&apos;t
+            track you individually across visits, and doesn&apos;t collect
+            anything that identifies you personally.
+          </p>
         </section>
 
         <section>
